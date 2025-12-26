@@ -1,4 +1,9 @@
 package com.mariacorredoira.gestorreservasback.users.domain.repository;
 
-public class UserRepository {
+import com.mariacorredoira.gestorreservasback.users.domain.entity.User;
+
+public interface UserRepository {
+    User save(User user);
+
+    User getByEmail(String username);
 }
