@@ -1,6 +1,6 @@
 package com.mariacorredoira.gestorreservasback.users.application;
 
-import com.mariacorredoira.gestorreservasback.users.application.exceptions.EmailAlreadyExistsException;
+import com.mariacorredoira.gestorreservasback.users.application.exceptions.UserNotFoundException;
 import com.mariacorredoira.gestorreservasback.users.domain.entity.User;
 import com.mariacorredoira.gestorreservasback.users.domain.mapper.UserDomainMapper;
 import com.mariacorredoira.gestorreservasback.users.domain.repository.UserRepository;
@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class CreateUserUseCase {
+public class UpdateUserUseCase {
 
     private final UserRepository userRepository;
 
-    public User execute(UserRequest request) {
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException(request.getEmail());
+    public User execute(Long id, UserRequest request) {
+        User userId = userRepository.getById(id);
+        if (userId == null) {
+            throw new UserNotFoundException(String.valueOf(id));
         }
-        User user = UserDomainMapper.toUserDomain(null, request);
-        user = userRepository.save(user);
+        User user = UserDomainMapper.toUserDomain(id, request);
+        user = userRepository.update(user);
         return user;
     }
 }
