@@ -1,6 +1,7 @@
 package com.mariacorredoira.gestorreservasback.shared;
 
 
+import com.mariacorredoira.gestorreservasback.activities.application.exceptions.ActivityNotFoundException;
 import com.mariacorredoira.gestorreservasback.users.application.exceptions.EmailAlreadyExistsException;
 import com.mariacorredoira.gestorreservasback.users.application.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -38,4 +39,8 @@ public class CommonExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(ex.getMessage()));
     }
 
+    @ExceptionHandler(ActivityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleActivityNotFound(ActivityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ex.getMessage()));
+    }
 }
